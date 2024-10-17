@@ -1,11 +1,21 @@
-import numpy as np
-import pyqtgraph as pg
-from pyqtgraph.Qt import QtWidgets
-import serial
-import time
+# number of labels to record for
+LABELS = [
+  'wave',
+  'punch'
+]
+
+# directory to record to
+DATA_DIR = './data/'
 
 
 if __name__ == '__main__':
+  import numpy as np
+  import pyqtgraph as pg
+  from pyqtgraph.Qt import QtWidgets
+  import serial
+  import time
+
+
   # find port name using `ls /dev/tty*`
   SERIAL_PORT_NAME = '/dev/tty.usbserial-01C738BF'
   # match baud rate in firmware
@@ -14,11 +24,6 @@ if __name__ == '__main__':
   NUM_CHANNELS = 3
   # number of samples to plot per axes
   PLOT_WIDTH = 300
-  # number of labels to record for
-  LABELS = [
-    'wave',
-    'punch'
-  ]
 
   # set up serial port and data structure
   serial_port = serial.Serial(SERIAL_PORT_NAME, SERIAL_PORT_BAUD_RATE)
@@ -49,7 +54,7 @@ if __name__ == '__main__':
       # set up file writing
       # include timestamp so data does not accidentally get overwritten
       recording_file_name =  label + '_' + str(time.time()) + '.txt'
-      recording_file_path = 'data/' + recording_file_name
+      recording_file_path = DATA_DIR + recording_file_name
       current_recording_file = open(recording_file_path, 'w')
     else:
       window.setBackground('black')
