@@ -1,7 +1,8 @@
 # number of labels to record for
 LABELS = [
   'wave',
-  'punch'
+  'punch',
+  'still'
 ]
 
 # directory to record to
@@ -26,7 +27,7 @@ if __name__ == '__main__':
   PLOT_WIDTH = 300
 
   # set up serial port and data structure
-  serial_port = serial.Serial(SERIAL_PORT_NAME, SERIAL_PORT_BAUD_RATE)
+  serial_port = serial.Serial(SERIAL_PORT_NAME, SERIAL_PORT_BAUD_RATE, timeout=0.1)
   data = np.zeros((NUM_CHANNELS, PLOT_WIDTH))
 
   # set up plotting window
