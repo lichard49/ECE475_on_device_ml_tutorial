@@ -45,3 +45,21 @@ if __name__ == '__main__':
   
   plt.tight_layout()
   plt.show()
+
+  # extract features (4 statistics)
+  features = []
+  for data in raw_data:
+    feature_vector = []
+    num_channels = data.shape[1]
+    for channel in range(num_channels):
+      signal = data[:, channel]
+      feature_vector += [
+        np.min(signal),
+        np.max(signal),
+        np.mean(signal),
+        np.std(signal)
+      ]
+
+    features.append(feature_vector)
+
+  features = np.array(features)
