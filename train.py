@@ -7,31 +7,41 @@ from plot_and_record import *
 
 
 if __name__ == '__main__':
-  # count how many examples of each label are in the dataset
+  # load data and corresponding labels
   label_count = {label : 0 for label in LABELS}
-  for file in os.listdir(DATA_DIR):
+  raw_data = []
+  labels = []
+  file_paths = []
+  for file in sorted(os.listdir(DATA_DIR)):
     file_path = os.path.join(DATA_DIR, file)
     if os.path.isfile(file_path):
-      for label in LABELS:
-        if label in file:
+      # determine what this file is labeled as
+      for l in LABELS:
+        if l in file:
+          label = l
           label_count[label] += 1
+          break
+
+      # load data from file
+      data = np.loadtxt(file_path, delimiter='\t')
+
+      # keep storage arrays parallel
+      raw_data.append(data)
+      labels.append(label)
+      file_paths.append(file_path)
 
   # plot each example
   num_rows = len(LABELS)
   num_columns = max(label_count.values())
   fig, ax = plt.subplots(num_rows, num_columns, sharex=True, sharey=True)
 
-  index = 0
-  for file in sorted(os.listdir(DATA_DIR)):
-    file_path = os.path.join(DATA_DIR, file)
-    if os.path.isfile(file_path):
-      data = np.loadtxt(file_path, delimiter='\t')
-
-      i = index // num_columns
-      j = index % num_columns
-      ax[i, j].plot(data)
-      ax[i, j].set_title(file_path)
-      index += 1
+  for i, target_label in enumerate(LABELS):
+    j = 0
+    for data, label, path in zip(raw_data, labels, file_paths):
+      if label == target_label:
+        ax[i, j].plot(data)
+        ax[i, j].set_title(path)
+        j += 1
   
   plt.tight_layout()
   plt.show()
