@@ -2,6 +2,9 @@ import matplotlib.pyplot as plt
 import os
 import csv
 import numpy as np
+from sklearn.model_selection import StratifiedKFold
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score
 
 from plot_and_record import *
 
@@ -63,3 +66,26 @@ if __name__ == '__main__':
     features.append(feature_vector)
 
   features = np.array(features)
+  labels = np.array(labels)
+
+  # generate train/test split
+  k_fold_split = StratifiedKFold(n_splits=2)
+  train_index, test_index = k_fold_split.split(features, labels)
+  # just look at the first fold
+  train_index = train_index[0]
+  test_index = test_index[0]
+  train_features = features[train_index]
+  train_labels = labels[train_index]
+  test_features = features[test_index]
+  test_labels = labels[test_index]
+
+  # train model
+  clf = RandomForestClassifier(random_state=0)
+  clf.fit(train_features, train_labels)
+
+  # evaluate model
+  predict_labels = clf.predict(test_features)
+  accuracy = accuracy_score(test_labels, predict_labels)
+  ConfusionMatrixDisplay.from_predictions(test_labels, predict_labels)
+  plt.title('Accuracy = ' + str(accuracy) + '%')
+  plt.show()
