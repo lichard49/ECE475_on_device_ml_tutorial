@@ -5,6 +5,7 @@ import numpy as np
 from sklearn.model_selection import StratifiedKFold
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score
+import emlearn
 
 from plot_and_record import *
 
@@ -89,3 +90,11 @@ if __name__ == '__main__':
   ConfusionMatrixDisplay.from_predictions(test_labels, predict_labels)
   plt.title('Accuracy = ' + str(accuracy) + '%')
   plt.show()
+
+  # train final model using all data
+  final_clf = RandomForestClassifier(random_state=0)
+  final_clf.fit(features, labels)
+
+  # export final model
+  ported_clf = emlearn.convert(final_clf, method='inline')
+  ported_clf.save(file='./out/model.h', name='model')
