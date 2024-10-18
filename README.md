@@ -26,6 +26,11 @@ This script reads all files in `./data/` and plots it for a quick overview visua
 It then extracts 4 statistical features (min, max, mean, std) from each file.
 First, the script splits the dataset into 50% for training and 50% for testing, and presents a confusion matrix on that evaluation.
 Second, the script trains a model on the entire dataset and exports it as a C header file at `./out/model.h`.
-Copy this header file to your Arduino code.
+Copy this header file to your Arduino code in `./emlearn_demo`.
 
 You will likely have to experiment with different features and/or models (i.e., SVM, decision tree, neural network) to achieve the best results on your dataset.
+
+## Inference
+
+Open `./emlearn_demo/emlearn_demo.ino` with the Arduino IDE and upload it to your microcontroller.
+The serial monitor will display the predicted label.
